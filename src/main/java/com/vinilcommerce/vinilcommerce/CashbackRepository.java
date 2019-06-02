@@ -4,6 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CashbackRepository extends JpaRepository<Cashback, Long>{
 
-	Cashback findByGenreAndDiaSemana(String genre, String diaSemana);
+	Cashback findByGenreAndDiaSemana(Genre genre, DiaSemana diaSemana);
 	
 }

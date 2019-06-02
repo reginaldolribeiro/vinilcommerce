@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,7 +16,11 @@ public class Cashback {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
+	
+	@Enumerated(EnumType.STRING)
 	private Genre genre;
+	
+	@Enumerated(EnumType.STRING)
 	private DiaSemana diaSemana;
 	private BigDecimal value;
 
@@ -22,13 +28,13 @@ public class Cashback {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Cashback(Genre genre, DiaSemana diaSemana, BigDecimal value) {
+	public Cashback(Genre Genre, DiaSemana diaSemana, BigDecimal value) {
 		this.genre = genre;
 		this.diaSemana = diaSemana;
 		this.value = value;
 	}
 
-	public BigDecimal calculate(Product product, LocalDate data) {
+	/*public BigDecimal calculate(Product product, LocalDate data) {
 
 		String diaDaSemana = data.getDayOfWeek().name();
 		
@@ -57,7 +63,7 @@ public class Cashback {
 		}
 
 		return BigDecimal.ZERO;
-	}
+	}*/
 
 	public Long getId() {
 		return id;

@@ -41,14 +41,21 @@ public class ItemSale {
 	 * Calculate cashback for item
 	 * 
 	 */
-	public void calculateCashback() {
-		this.cashbackPercentage = new Cashback().calculate(this.product, this.sale.getData());
-		
-		BigDecimal discount = BigDecimal.ONE.subtract(this.cashbackPercentage.divide(new BigDecimal(100)));
-		this.price = this.getProduct().getPrice().multiply(discount);
-		
-		this.cashbackValue = this.product.getPrice().subtract(this.price);
-	}
+//	public void calculateCashback() {
+//		this.cashbackPercentage = new Cashback().calculate(this.product, this.sale.getData());
+//		
+//		BigDecimal discount = BigDecimal.ONE.subtract(this.cashbackPercentage.divide(new BigDecimal(100)));
+//		this.price = this.getProduct().getPrice().multiply(discount);
+//		
+//		this.cashbackValue = this.product.getPrice().subtract(this.price);
+//	}
+//	
+//	public void calculateCashback(BigDecimal cashbackPercentage2) {
+//		BigDecimal discount = BigDecimal.ONE.subtract(cashbackPercentage2.divide(new BigDecimal(100)));
+//		this.price = this.getProduct().getPrice().multiply(discount);
+//		
+//		this.cashbackValue = this.product.getPrice().subtract(this.price);		
+//	}
 	
 	/*@PrePersist
 	public void prePersist() {

@@ -15,13 +15,13 @@ public class Product {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
 	private String name;
-	private String genre;
+	private Genre genre;
 	private BigDecimal price;
 	
 	public Product() {
 	}
 
-	public Product(String name, String genre, BigDecimal price) {
+	public Product(String name, Genre genre, BigDecimal price) {
 		this.name = name;
 		this.genre = genre;
 		this.price = price;
@@ -56,10 +56,6 @@ public class Product {
 	
 	
 	
-	
-	
-	
-	
 	public Long getId() {
 		return id;
 	}
@@ -76,11 +72,11 @@ public class Product {
 		this.name = name;
 	}
 
-	public String getGenre() {
+	public Genre getGenre() {
 		return genre;
 	}
 
-	public void setGenre(String genre) {
+	public void setGenre(Genre genre) {
 		this.genre = genre;
 	}
 

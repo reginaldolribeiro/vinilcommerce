@@ -40,13 +40,6 @@ public class Sale {
 	
 	
 	public void calculateCashback() {			
-		/*for (ItemSale item : itens) {
-			this.totalCashback = item.getCashbackValue();
-			System.out.println(this.totalCashback);
-			this.totalValue = item.getPrice().plus();			
-			System.out.println("Valor total:" + totalValue);
-		}*/
-		
 		itens.forEach(item -> {
 			this.totalCashback = item.getCashbackValue();
 			System.out.println(this.totalCashback);
