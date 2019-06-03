@@ -1,7 +1,6 @@
-package com.vinilcommerce.vinilcommerce;
+package com.vinilcommerce.model;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;

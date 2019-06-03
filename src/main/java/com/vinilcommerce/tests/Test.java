@@ -1,4 +1,4 @@
-package com.vinilcommerce.vinilcommerce;
+package com.vinilcommerce.tests;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;

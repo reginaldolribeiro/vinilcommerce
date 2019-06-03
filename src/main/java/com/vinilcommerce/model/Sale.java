@@ -1,4 +1,4 @@
-package com.vinilcommerce.vinilcommerce;
+package com.vinilcommerce.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -39,12 +39,10 @@ public class Sale {
 	}
 	
 	
-	public void calculateCashback() {			
+	public void calculateTotalCashback() {			
 		itens.forEach(item -> {
-			this.totalCashback = item.getCashbackValue();
-			System.out.println(this.totalCashback);
-			this.totalValue = item.getPrice().plus();			
-			System.out.println("Valor total:" + totalValue);
+			this.totalCashback = this.totalCashback.add(item.getCashbackValue());
+			this.totalValue = this.totalValue.add(item.getPrice().plus());			
 		});
 		
 	}

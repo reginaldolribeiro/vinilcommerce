@@ -8,6 +8,12 @@ import javax.persistence.NoResultException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.vinilcommerce.model.Cashback;
+import com.vinilcommerce.model.DiaSemana;
+import com.vinilcommerce.model.ItemSale;
+import com.vinilcommerce.model.Product;
+import com.vinilcommerce.repository.CashbackRepository;
+
 @Service
 public class CashbackService {
 

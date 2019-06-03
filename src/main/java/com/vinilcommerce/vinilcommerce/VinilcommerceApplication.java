@@ -1,13 +1,15 @@
 package com.vinilcommerce.vinilcommerce;
 
-import java.math.BigDecimal;
-
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
+@EnableAutoConfiguration
+@EntityScan("com.vinilcommerce.model")
+@EnableJpaRepositories("com.vinilcommerce.repository")
 public class VinilcommerceApplication {
 
 	public static void main(String[] args) {
