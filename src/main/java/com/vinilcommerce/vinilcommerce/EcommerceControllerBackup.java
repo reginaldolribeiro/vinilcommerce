@@ -27,7 +27,7 @@ import com.vinilcommerce.repository.SaleRepository;
 //@RestController
 public class EcommerceControllerBackup {
 
-	@Autowired
+	/*@Autowired
 	private SaleRepository saleRepository;
 
 	@Autowired
@@ -55,12 +55,12 @@ public class EcommerceControllerBackup {
 
 	// *** FIM DOS TESTES ***
 
-	/**
+	*//**
 	 * Consultar o catálogo de discos de forma paginada, filtrando por gênero e
 	 * ordenando de forma crescente pelo nome do disco;
 	 * 
 	 * @return
-	 */
+	 *//*
 	@GetMapping("/product/genre/{genre}")
 	public ResponseEntity<List<Product>> findProductsByGenre(@PathVariable String genre) {
 		
@@ -71,7 +71,7 @@ public class EcommerceControllerBackup {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		
-		List<Product> products = productRepository.findByGenre(genreSearched);
+		List<Product> products = productRepository.findByGenreOrderByName(genreSearched);
 		
 		if (products.isEmpty()) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -81,11 +81,11 @@ public class EcommerceControllerBackup {
 		
 	}
 
-	/**
+	*//**
 	 * Consulta o disco pelo seu identificador.
 	 * 
 	 * @return
-	 */
+	 *//*
 	@GetMapping("/product/{id}")
 	public ResponseEntity<Product> findProductById(@PathVariable Long id) {
 		Product product = productRepository.findById(id).orElse(null);
@@ -130,13 +130,13 @@ public class EcommerceControllerBackup {
 		return new ResponseEntity<List<Sale>>(sales, HttpStatus.OK);
 	}
 
-	/**
+	*//**
 	 * Consultar todas as vendas efetuadas de forma paginada, filtrando pelo range
 	 * de datas (inicial e final) da venda e ordenando de forma decrescente pela
 	 * data da venda;
 	 * 
 	 * @return
-	 */
+	 *//*
 	@GetMapping("/sale/{ini}/{fim}")
 	public List<Sale> findSalesByRangeDate(@PathVariable String ini, @PathVariable String fim) {
 
@@ -184,7 +184,7 @@ public class EcommerceControllerBackup {
 		sale = saleRepository.save(sale);
 		
 		return new ResponseEntity<Sale>(sale, HttpStatus.CREATED);
-	}
+	}*/
 	
 	
 	// Inserindo apenas um item

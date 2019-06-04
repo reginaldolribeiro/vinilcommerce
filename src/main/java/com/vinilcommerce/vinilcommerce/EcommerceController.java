@@ -2,9 +2,11 @@ package com.vinilcommerce.vinilcommerce;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,6 +14,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.vinilcommerce.model.Genre;
@@ -22,10 +27,18 @@ import com.vinilcommerce.repository.ProductRepository;
 import com.vinilcommerce.repository.SaleRepository;
 
 @RestController
+//@RepositoryRestController
 //@RequestMapping("/vinilcommerce/api")
 public class EcommerceController {
+	
+	@GetMapping(value ="/test/{start}/{end}")
+	 public @ResponseBody String test(@PathVariable("start")@DateTimeFormat(pattern="ddMMyyyy") Date start,
+			 @PathVariable("end")@DateTimeFormat(pattern="ddMMyyyy") Date end){
+	     System.out.println(start);
+	     return start.toString() + " - " + end.toString();
+	  } 
 
-	@Autowired
+	/*@Autowired
 	private SaleRepository saleRepository;
 
 	@Autowired
@@ -34,12 +47,12 @@ public class EcommerceController {
 	@Autowired
 	private CashbackService cashbackService;
 
-	/**
+	*//**
 	 * 1. Consultar o catálogo de discos de forma paginada, filtrando por gênero e
 	 * ordenando de forma crescente pelo nome do disco;
 	 * 
 	 * @return
-	 */
+	 *//*
 	@GetMapping("/product/genre/{genre}")
 	public ResponseEntity<List<Product>> findProductsByGenre(@PathVariable String genre) {
 		
@@ -50,7 +63,7 @@ public class EcommerceController {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		
-		List<Product> products = productRepository.findByGenre(genreSearched);
+		List<Product> products = productRepository.findByGenreOrderByName(genreSearched);
 		
 		if (products.isEmpty()) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -60,11 +73,11 @@ public class EcommerceController {
 		
 	}
 
-	/**
+	*//**
 	 * 2. Consulta o disco pelo seu identificador.
 	 * 
 	 * @return
-	 */
+	 *//*
 	@GetMapping("/product/{id}")
 	public ResponseEntity<Product> findProductById(@PathVariable Long id) {
 		Product product = productRepository.findById(id).orElse(null);
@@ -74,13 +87,13 @@ public class EcommerceController {
 		return new ResponseEntity<Product>(product, HttpStatus.OK);
 	}
 	
-	/**
+	*//**
 	 * 3. Consultar todas as vendas efetuadas de forma paginada, filtrando pelo range
 	 * de datas (inicial e final) da venda e ordenando de forma decrescente pela
 	 * data da venda;
 	 * 
 	 * @return
-	 */
+	 *//*
 	@GetMapping("/sale/{ini}/{fim}")
 	public List<Sale> findSalesByRangeDate(@PathVariable String ini, @PathVariable String fim) {
 
@@ -93,11 +106,11 @@ public class EcommerceController {
 		return sales;
 	}
 
-	/**
+	*//**
 	 * 4. Consulta uma venda pelo seu identificador
 	 * @param id
 	 * @return
-	 */
+	 *//*
 	@GetMapping("/sale/{id}")
 	public ResponseEntity<Sale> findSaleById(@PathVariable Long id) {
 		System.out.println("Sale " + id);
@@ -109,11 +122,11 @@ public class EcommerceController {
 		
 	}
 
-	/**
+	*//**
 	 * 5. Registrar uma nova venda de discos calculando o valor total de cashback considerando a tabela.
 	 * @param sale
 	 * @return
-	 */
+	 *//*
 	@PostMapping("/sale")
 	public ResponseEntity<Sale> createSale(@RequestBody Sale sale) {
 		
@@ -139,10 +152,10 @@ public class EcommerceController {
 	}
 	
 	
-	/**
+	*//**
 	 * 
 	 * @return
-	 */
+	 *//*
 	
 
 	@GetMapping("/product")
@@ -178,7 +191,7 @@ public class EcommerceController {
 		}
 
 		return new ResponseEntity<List<Sale>>(sales, HttpStatus.OK);
-	}
+	}*/
 
 
 }
