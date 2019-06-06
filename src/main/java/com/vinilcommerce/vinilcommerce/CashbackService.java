@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.vinilcommerce.model.Cashback;
-import com.vinilcommerce.model.DiaSemana;
 import com.vinilcommerce.model.ItemSale;
 import com.vinilcommerce.model.Product;
 import com.vinilcommerce.repository.CashbackRepository;
@@ -41,10 +40,6 @@ public class CashbackService {
 	}
 
 	public BigDecimal getCashback(Product product, LocalDate data) {
-		String diaDaSemana = data.getDayOfWeek().name();
-		DiaSemana valueOf = DiaSemana.valueOf(diaDaSemana);
-		System.out.println(valueOf);
-		
 		try {
 			Cashback cashback = repository.findByGenreAndDayOfWeek(product.getGenre(), data.getDayOfWeek());			
 			return cashback.getValue();

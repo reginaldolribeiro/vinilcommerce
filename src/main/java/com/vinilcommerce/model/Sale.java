@@ -23,7 +23,7 @@ public class Sale {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
 	private LocalDate data = LocalDate.now();
-	private String client;
+	private String customer;
 	private BigDecimal totalValue = BigDecimal.ZERO;
 	private BigDecimal totalCashback = BigDecimal.ZERO;
 	
@@ -33,8 +33,8 @@ public class Sale {
 	public Sale() {
 	}
 	
-	public Sale(String client, List<ItemSale> itens) {
-		this.client = client;
+	public Sale(String customer, List<ItemSale> itens) {
+		this.customer = customer;
 		this.itens = itens;
 	}
 	
@@ -93,12 +93,12 @@ public class Sale {
 		this.data = data;
 	}
 
-	public String getClient() {
-		return client;
+	public String getCustomer() {
+		return customer;
 	}
 
-	public void setClient(String client) {
-		this.client = client;
+	public void setCustomer(String customer) {
+		this.customer = customer;
 	}
 
 	public List<ItemSale> getItens() {
@@ -127,7 +127,7 @@ public class Sale {
 
 	@Override
 	public String toString() {
-		return "Sale [id=" + id + ", data=" + data + ", client=" + client + ", itens=" + itens + ", totalValue="
+		return "Sale [id=" + id + ", data=" + data + ", customer=" + customer + ", itens=" + itens + ", totalValue="
 				+ totalValue + ", totalCashback=" + totalCashback + "]";
 	}
 

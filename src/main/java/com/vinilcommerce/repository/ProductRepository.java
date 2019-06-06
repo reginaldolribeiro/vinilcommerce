@@ -13,6 +13,6 @@ import com.vinilcommerce.model.Product;
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
 	//@RestResource(path="bygenre", rel="bygenre")
-	Page<Product> findByGenreOrderByName(Genre genre, Pageable p);
+	Page<Product> findByGenreOrderByName(Genre genre, Pageable pageable);
 	
 }

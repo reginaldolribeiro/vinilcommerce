@@ -52,6 +52,15 @@ public class EcommerceController {
 			Pageable pageable) {
 
 		Genre genreSearched;
+		
+		if(genre == null) {
+			Page<Product> products = productRepository.findAll(pageable);	
+			if (products.isEmpty()) {
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}
+			return new ResponseEntity<>(products, HttpStatus.OK);
+		}
+		
 		try {
 			genreSearched = Genre.getEnum(genre.toUpperCase());
 		} catch (Exception e) {

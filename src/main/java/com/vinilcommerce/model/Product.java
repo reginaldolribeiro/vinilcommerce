@@ -15,14 +15,16 @@ public class Product {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
 	private String name;
+	private String artistName;
 	private Genre genre;
 	private BigDecimal price;
 	
 	public Product() {
 	}
 
-	public Product(String name, Genre genre, BigDecimal price) {
+	public Product(String name, String artistName, Genre genre, BigDecimal price) {
 		this.name = name;
+		this.artistName = artistName;
 		this.genre = genre;
 		this.price = price;
 	}
@@ -71,6 +73,14 @@ public class Product {
 	public void setName(String name) {
 		this.name = name;
 	}
+	
+	public String getArtistName() {
+		return artistName;
+	}
+
+	public void setArtistName(String artistName) {
+		this.artistName = artistName;
+	}
 
 	public Genre getGenre() {
 		return genre;
@@ -95,8 +105,8 @@ public class Product {
 
 	@Override
 	public String toString() {
-		return "Product [id=" + id + ", name=" + name + ", genre=" + genre + ", price=" + price + "]";
+		return "Product [id=" + id + ", name=" + name + ", artistName=" + artistName + ", genre=" + genre + ", price="
+				+ price + "]";
 	}
-
 
 }
