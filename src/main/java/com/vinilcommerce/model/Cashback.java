@@ -1,6 +1,7 @@
 package com.vinilcommerce.model;
 
 import java.math.BigDecimal;
+import java.time.DayOfWeek;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -20,16 +21,16 @@ public class Cashback {
 	private Genre genre;
 	
 	@Enumerated(EnumType.STRING)
-	private DiaSemana diaSemana;
+	private DayOfWeek dayOfWeek;
 	private BigDecimal value;
 
 	public Cashback() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Cashback(Genre Genre, DiaSemana diaSemana, BigDecimal value) {
+	public Cashback(Genre genre, DayOfWeek dayOfWeek, BigDecimal value) {
 		this.genre = genre;
-		this.diaSemana = diaSemana;
+		this.dayOfWeek = dayOfWeek;
 		this.value = value;
 	}
 
@@ -79,13 +80,13 @@ public class Cashback {
 	public void setGenre(Genre genre) {
 		this.genre = genre;
 	}
-
-	public DiaSemana getDiaSemana() {
-		return diaSemana;
+	
+	public DayOfWeek getDayOfWeek() {
+		return dayOfWeek;
 	}
 
-	public void setDiaSemana(DiaSemana diaSemana) {
-		this.diaSemana = diaSemana;
+	public void setDayOfWeek(DayOfWeek dayOfWeek) {
+		this.dayOfWeek = dayOfWeek;
 	}
 
 	public BigDecimal getValue() {

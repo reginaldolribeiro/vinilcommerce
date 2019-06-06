@@ -46,7 +46,7 @@ public class CashbackService {
 		System.out.println(valueOf);
 		
 		try {
-			Cashback cashback = repository.findByGenreAndDiaSemana(product.getGenre(), valueOf);			
+			Cashback cashback = repository.findByGenreAndDayOfWeek(product.getGenre(), data.getDayOfWeek());			
 			return cashback.getValue();
 		} catch (NoResultException e) {
 			return BigDecimal.ZERO;
