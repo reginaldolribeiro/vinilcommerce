@@ -20,7 +20,7 @@ import javax.persistence.PrePersist;
 public class Sale {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE)
 	private Long id;
 	private LocalDate data = LocalDate.now();
 	private String customer;
