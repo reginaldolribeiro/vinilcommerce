@@ -42,7 +42,9 @@ public class VinilcommerceApplication {
 	}
 
 	private void loadAlbumsSpotify() {
+		
 		long count = productRepository.count();
+		
 		System.out.println("Qtd albums: " + count);
 
 		if (count != 200) {

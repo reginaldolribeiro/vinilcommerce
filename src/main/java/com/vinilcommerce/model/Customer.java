@@ -14,7 +14,6 @@ public class Customer {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE)
 	private Long id;
 	private String name;
-	private String cpf;
 	private LocalDate birthDate;
 	private String email;
 	
@@ -22,9 +21,8 @@ public class Customer {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public Customer(String name, String cpf, LocalDate birthDate, String email) {
+	public Customer(String name, LocalDate birthDate, String email) {
 		this.name = name;
-		this.cpf = cpf;
 		this.birthDate = birthDate;
 		this.email = email;
 	}
@@ -45,14 +43,6 @@ public class Customer {
 		this.name = name;
 	}
 
-	public String getCpf() {
-		return cpf;
-	}
-
-	public void setCpf(String cpf) {
-		this.cpf = cpf;
-	}
-
 	public LocalDate getBirthDate() {
 		return birthDate;
 	}
@@ -71,8 +61,7 @@ public class Customer {
 
 	@Override
 	public String toString() {
-		return "Customer [id=" + id + ", name=" + name + ", cpf=" + cpf + ", birthDate=" + birthDate + ", email="
-				+ email + "]";
+		return "Customer [id=" + id + ", name=" + name + ", birthDate=" + birthDate + ", email=" + email + "]";
 	}
 	
 }

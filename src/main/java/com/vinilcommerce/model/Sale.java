@@ -3,7 +3,6 @@ package com.vinilcommerce.model;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -13,47 +12,46 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.PostPersist;
-import javax.persistence.PrePersist;
 
 @Entity
 public class Sale {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.SEQUENCE)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Long id;
 	private LocalDate data = LocalDate.now();
-	private String customer;
+	
+	@OneToOne()
+	private Customer customer;
+	
 	private BigDecimal totalValue = BigDecimal.ZERO;
 	private BigDecimal totalCashback = BigDecimal.ZERO;
-	
-	@OneToMany(mappedBy="sale", cascade=CascadeType.ALL)
+
+	@OneToMany(mappedBy = "sale", cascade = CascadeType.ALL)
 	private List<ItemSale> itens = new ArrayList<ItemSale>();
 
 	public Sale() {
 	}
-	
-	public Sale(String customer, List<ItemSale> itens) {
+
+	public Sale(Customer customer, List<ItemSale> itens) {
 		this.customer = customer;
 		this.itens = itens;
 	}
-	
-	
-	public void calculateTotalCashback() {			
+
+	public void calculateTotalCashback() {
 		itens.forEach(item -> {
 			this.totalCashback = this.totalCashback.add(item.getCashbackValue());
-			this.totalValue = this.totalValue.add(item.getPrice().plus());			
+			this.totalValue = this.totalValue.add(item.getPrice().plus());
 		});
-		
+
 	}
-	
+
 //	@PostPersist
 //	public void prePersist() {
 //		calculateCashback();
 //		System.out.println("Salvando a venda do " + this.client + " em " + this.data);
 //	}
-	
-	
+
 //	public void calculateCashback() {
 //		Cashback cashback = new Cashback();
 ////		this.itens.forEach(item -> {
@@ -72,10 +70,6 @@ public class Sale {
 //			System.out.println("Valor total:" + totalValue);
 //		}
 //	}
-	
-	
-	
-	
 
 	public Long getId() {
 		return id;
@@ -93,11 +87,11 @@ public class Sale {
 		this.data = data;
 	}
 
-	public String getCustomer() {
+	public Customer getCustomer() {
 		return customer;
 	}
 
-	public void setCustomer(String customer) {
+	public void setCustomer(Customer	 customer) {
 		this.customer = customer;
 	}
 
