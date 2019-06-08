@@ -29,7 +29,6 @@ public class CashbackController {
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<Cashback> findById(@PathVariable Long id) {
-		System.out.println("Buscando pelo id " + id);
 		Cashback cashback = repository.findById(id).orElse(null);
 		if(cashback == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);

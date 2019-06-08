@@ -43,33 +43,21 @@ public class VinilcommerceApplication {
 
 	private void loadAlbumsSpotify() {
 		
-		long count = productRepository.count();
+		Long count = productRepository.count();
 		
-		System.out.println("Qtd albums: " + count);
+		System.out.println("Albums quantity: " + count);
 
-		if (count != 200) {
+		if (count == 0) {
 			List<Genre> genres = Arrays.asList(Genre.values());
-
 			genres.stream().forEach(genre -> {
 				String genreString = genre.name();
-				// System.out.println(genreString);
 				try {
-					spotifyService.initAlbumsSpotify(genreString);
+					spotifyService.initAlbums(genreString);
 				} catch (SpotifyWebApiException | IOException e) {
 					e.printStackTrace();
 				}
 			});
 		}
 	}
-
-//	@Bean
-//	public CommandLineRunner commandLineRunner() {
-//		return args -> {
-//			System.out.println("Inserindo...");
-//			Product them = new Product("Them", "Metal", new BigDecimal(50), BigDecimal.TEN);
-//			
-//			System.out.println(them);
-//		};
-//	}
 
 }

@@ -17,7 +17,7 @@ import javax.persistence.OneToOne;
 public class Sale {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private LocalDate data = LocalDate.now();
 	

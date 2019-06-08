@@ -24,6 +24,10 @@ import com.vinilcommerce.model.Sale;
 import com.vinilcommerce.repository.ProductRepository;
 import com.vinilcommerce.repository.SaleRepository;
 
+/**
+ * Teste - EXCLUIR
+ *
+ */
 //@RestController
 public class EcommerceControllerBackup {
 

@@ -26,7 +26,7 @@ public class SpotifyService {
 	private SpotifyApi spotifyApi;
 	
 	
-	public void initAlbumsSpotify(String genre) throws SpotifyWebApiException, IOException {
+	public void initAlbums(String genre) throws SpotifyWebApiException, IOException {
 
 		System.out.println(spotifyApi.getAccessToken());
 		
@@ -64,12 +64,12 @@ public class SpotifyService {
 			Map artist = (Map) artists.get(0);
 			String artistName = (String) artist.get("name");
 			
-			System.out.println("*** Artist: " + artistName );
-			System.out.println(itemMap.get("name"));
+			/*System.out.println("*** Artist: " + artistName );
+			System.out.println(itemMap.get("name"));*/
 			
 			BigDecimal price = BigDecimal.ZERO;
 			Product product = new Product(album, artistName, genreSearched, price);
-			System.out.println(product.toString());
+			//System.out.println(product.toString());
 			
 			products.add(product);
 			

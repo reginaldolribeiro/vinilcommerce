@@ -11,7 +11,7 @@ import javax.persistence.Id;
 public class Customer {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.SEQUENCE)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String name;
 	private LocalDate birthDate;

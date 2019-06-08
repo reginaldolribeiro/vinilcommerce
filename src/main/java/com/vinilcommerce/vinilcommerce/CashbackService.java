@@ -1,6 +1,7 @@
 package com.vinilcommerce.vinilcommerce;
 
 import java.math.BigDecimal;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 
 import javax.persistence.NoResultException;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.vinilcommerce.model.Cashback;
+import com.vinilcommerce.model.Genre;
 import com.vinilcommerce.model.ItemSale;
 import com.vinilcommerce.model.Product;
 import com.vinilcommerce.repository.CashbackRepository;
@@ -46,6 +48,6 @@ public class CashbackService {
 		} catch (NoResultException e) {
 			return BigDecimal.ZERO;
 		}
-	}
+	}	
 	
 }

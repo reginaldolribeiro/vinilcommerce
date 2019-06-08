@@ -14,6 +14,11 @@ import com.vinilcommerce.model.Product;
 import com.vinilcommerce.repository.ProductRepository;
 import com.wrapper.spotify.exceptions.SpotifyWebApiException;
 
+/**
+ * Teste - EXCLUIR
+ *
+ */
+
 @RestController
 @RequestMapping("/spotify")
 public class SpotifyController {
@@ -26,7 +31,7 @@ public class SpotifyController {
 	@GetMapping("{genre}")
 	public List<Product> getAlbum(@PathVariable String genre) throws SpotifyWebApiException, IOException {
 		
-		service.initAlbumsSpotify(genre);
+		service.initAlbums(genre);
 		return productRepository.findAll();
 	}
 	
