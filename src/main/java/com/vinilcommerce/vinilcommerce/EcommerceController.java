@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,15 +22,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.vinilcommerce.model.Customer;
 import com.vinilcommerce.model.Genre;
 import com.vinilcommerce.model.ItemSale;
 import com.vinilcommerce.model.Product;
 import com.vinilcommerce.model.Sale;
+import com.vinilcommerce.repository.CustomerRepository;
 import com.vinilcommerce.repository.ProductRepository;
 import com.vinilcommerce.repository.SaleRepository;
 
 @RestController
-//@RequestMapping("/vinilcommerce/api")
+@RequestMapping("/api")
 public class EcommerceController {
 
 	@Autowired
@@ -40,6 +43,9 @@ public class EcommerceController {
 
 	@Autowired
 	private CashbackService cashbackService;
+	
+	@Autowired
+	private CustomerRepository customerRepository;
 
 	/**
 	 * 1. Consultar o catálogo de discos de forma paginada, filtrando por gênero e
@@ -47,7 +53,7 @@ public class EcommerceController {
 	 * 
 	 * @return
 	 */
-	@GetMapping("/product")
+	@GetMapping("/album")
 	public ResponseEntity<Page<Product>> findAll(@RequestParam(value = "genre", required = false) String genre,
 			Pageable pageable) {
 
@@ -80,7 +86,7 @@ public class EcommerceController {
 	 * 
 	 * @return
 	 */
-	@GetMapping("/product/{id}")
+	@GetMapping("/album/{id}")
 	public ResponseEntity<Product> findProductById(@PathVariable Long id) {
 		Product product = productRepository.findById(id).orElse(null);
 		if (product == null) {
@@ -102,6 +108,10 @@ public class EcommerceController {
 			@RequestParam(value = "end", required = false) @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate end,
 			Pageable pageable) {
 
+		if(start == null || end == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
 		Page<Sale> sales = saleRepository.findAllByDataBetweenOrderByDataDesc(start, end, pageable);
 		if (sales.isEmpty()) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -142,6 +152,14 @@ public class EcommerceController {
 	public ResponseEntity<Sale> createSale(@RequestBody Sale sale) {
 
 		System.out.println(sale);
+		
+		Long customerId = sale.getCustomer().getId();
+		Customer customer = customerRepository.findById(customerId).orElse(null);
+		if(customer == null) {
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		sale.setCustomer(customer);
+		
 		for (ItemSale item : sale.getItens()) {
 
 			Long idProduct = item.getProduct().getId();

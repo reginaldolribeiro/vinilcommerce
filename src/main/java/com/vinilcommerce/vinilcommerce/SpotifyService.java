@@ -2,6 +2,7 @@ package com.vinilcommerce.vinilcommerce;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -67,9 +68,9 @@ public class SpotifyService {
 			/*System.out.println("*** Artist: " + artistName );
 			System.out.println(itemMap.get("name"));*/
 			
-			BigDecimal price = BigDecimal.ZERO;
+			BigDecimal price = generateRandomValue();
+			
 			Product product = new Product(album, artistName, genreSearched, price);
-			//System.out.println(product.toString());
 			
 			products.add(product);
 			
@@ -77,6 +78,12 @@ public class SpotifyService {
 		
 		return products;
 		
+	}
+
+	private BigDecimal generateRandomValue() {
+		double random = (Math.random()*50)+20;
+		BigDecimal price = new BigDecimal(random).setScale(2, RoundingMode.CEILING);
+		return price;
 	}
 
 }

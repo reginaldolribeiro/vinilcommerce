@@ -1,16 +1,13 @@
 package com.vinilcommerce.tests;
 
 import java.math.BigDecimal;
-import java.time.DayOfWeek;
-import java.util.Arrays;
-import java.util.List;
-
-import com.vinilcommerce.model.Cashback;
-import com.vinilcommerce.model.Genre;
+import java.math.BigInteger;
+import java.math.RoundingMode;
+import java.util.Random;
 
 public class Test {
 
-	private static void loadCashbacks(BigDecimal productValue) {
+	/*private static void loadCashbacks(BigDecimal productValue) {
 		List<Genre> genres = Arrays.asList(Genre.values());
 
 		genres.stream().forEach(genre -> {
@@ -28,6 +25,17 @@ public class Test {
 			});
 			
 		});
+	}*/
+	
+	public static void main(String[] args) {
+			
+		for(int i=0; i < 100; i++) {
+			
+			double random = (Math.random()*50)+20;
+			BigDecimal randomNumber = new BigDecimal(random).setScale(2, RoundingMode.CEILING);
+			System.out.println(randomNumber);
+		}
+		
 	}
 	
 	/*public static void main(String[] args) {
