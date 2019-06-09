@@ -109,7 +109,12 @@ public class EcommerceController {
 			Pageable pageable) {
 
 		if(start == null || end == null) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			Page<Sale> sales = saleRepository.findAll(pageable);
+			if (sales.isEmpty()) {
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}
+			return new ResponseEntity<>(sales, HttpStatus.OK);
+			//return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		
 		Page<Sale> sales = saleRepository.findAllByDataBetweenOrderByDataDesc(start, end, pageable);
@@ -179,37 +184,5 @@ public class EcommerceController {
 
 		return new ResponseEntity<Sale>(sale, HttpStatus.CREATED);
 	}
-
-	/**
-	 * 
-	 * @return
-	 */
-
-	/*
-	 * @GetMapping("/product") public ResponseEntity<List<Product>> findProduct() {
-	 * List<Product> products = productRepository.findAll();
-	 * 
-	 * if (products.isEmpty()) { return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-	 * }
-	 * 
-	 * return new ResponseEntity<List<Product>>(products, HttpStatus.OK);
-	 * 
-	 * }
-	 * 
-	 * @PostMapping("/product") public ResponseEntity<Product>
-	 * createProduct(@RequestBody Product product) { System.out.println(product);
-	 * product = productRepository.save(product); return new
-	 * ResponseEntity<Product>(product, HttpStatus.CREATED); }
-	 * 
-	 * @DeleteMapping("/product/{id}") public ResponseEntity<?> delete(@PathVariable
-	 * Long id) { productRepository.deleteById(id); return new
-	 * ResponseEntity<>(HttpStatus.NO_CONTENT); }
-	 * 
-	 * @GetMapping("/sale") public ResponseEntity<List<Sale>> findSales() {
-	 * List<Sale> sales = saleRepository.findAll(); if (sales.isEmpty()) { return
-	 * new ResponseEntity<>(HttpStatus.NOT_FOUND); }
-	 * 
-	 * return new ResponseEntity<List<Sale>>(sales, HttpStatus.OK); }
-	 */
 
 }

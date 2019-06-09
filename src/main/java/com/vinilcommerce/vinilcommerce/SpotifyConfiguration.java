@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -23,6 +25,9 @@ public class SpotifyConfiguration {
 
 	private static final ClientCredentialsRequest clientCredentialsRequest = spotifyApi.clientCredentials().build();
 
+	@Autowired
+	private SpotifyService spotifyService;
+
 	@Bean
 	public SpotifyApi clientCredentials() {
 
@@ -33,12 +38,18 @@ public class SpotifyConfiguration {
 			spotifyApi.setAccessToken(clientCredentials.getAccessToken());
 
 			System.out.println("Expires in: " + clientCredentials.getExpiresIn());
+
 		} catch (IOException | SpotifyWebApiException e) {
 			System.out.println("Error: " + e.getMessage());
 		}
 
 		return spotifyApi;
 
+	}
+
+	@Bean
+	public void loadAlbums() {
+		spotifyService.loadAlbums();
 	}
 
 	public static void clientCredentials_Async() {

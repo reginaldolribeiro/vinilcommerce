@@ -40,17 +40,15 @@ public class VinilcommerceApplicationTests {
 
     }
 
-	/**
-     * Rest Assured
-     */
     @Test
     public void checkHeaderResponse() {
         this.responseAlbum.then().statusCode(200).and().contentType(ContentType.JSON);
+        this.responseSale.then().statusCode(200).and().contentType(ContentType.JSON);
     }
 	
     // consultar o catalogo de discos por genero, paginacao, todos de uma vez
     @Test
-    public void checkIfAlbumByGenreIsOk() {
+    public void searchAlbumByGenre() {
     	
     	List<Genre> genres = Arrays.asList(Genre.values());
 		genres.stream().forEach(genre -> {
@@ -63,7 +61,7 @@ public class VinilcommerceApplicationTests {
     }
     
     @Test
-    public void checkIfAlbumByGenrePaginateIsOk() {
+    public void searchPaginateAlbumByGenre() {
     	
     	List<Genre> genres = Arrays.asList(Genre.values());
 		genres.stream().forEach(genre -> {
@@ -77,7 +75,7 @@ public class VinilcommerceApplicationTests {
     
     // consultar o disco por ID
     @Test
-    public void getAlbumById() {
+    public void searchAlbumById() {
     	String id = "1";
 		String url = ENDPOINT_ALBUM + "/" + id;
 		RestAssured.given().get(url).then().statusCode(200).and().contentType(ContentType.JSON);
@@ -85,13 +83,17 @@ public class VinilcommerceApplicationTests {
     
     // consultar todas as vendas paginada, por range de datas e ordenados
     @Test
-    public void checkIfSaleIsOk() {
-		RestAssured.given().get(ENDPOINT_SALE).then().statusCode(200).and().contentType(ContentType.JSON);
+    public void searchPaginateSalesByDates() {
+    	String url = ENDPOINT_SALE + "?start=01/06/2019&end=09/06/2019&size=1&page=0";
+    	RestAssured.given().get(url).then().statusCode(200).and().contentType(ContentType.JSON);
+    	List<Product> sales = RestAssured.given().get(url).andReturn().getBody().jsonPath().getList("content", Product.class);
+    	System.out.println(sales.size());
+    	//assertTrue(!sales.isEmpty());
     }
     
     // consultar a venda por ID
     @Test
-    public void checkIfSaleByIdIsOk() {
+    public void searchSaleById() {
     	String id = "1";
 		String url = ENDPOINT_SALE + "/" + id;
 		RestAssured.given().get(url).then().statusCode(200).and().contentType(ContentType.JSON);
@@ -102,9 +104,5 @@ public class VinilcommerceApplicationTests {
     public void registerSale() {
     	//Sale sale = new Sale();
     }
-    
-    // consultar se tem disco de rock, mpb, pop e classic 
-    
-    
     
 }

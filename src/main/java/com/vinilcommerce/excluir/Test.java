@@ -1,4 +1,4 @@
-package com.vinilcommerce.tests;
+package com.vinilcommerce.excluir;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
