@@ -9,7 +9,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
-import javax.persistence.PrePersist;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -30,45 +29,12 @@ public class ItemSale {
 	@ManyToOne
 	private Sale sale;
 	
+	public ItemSale() {
+	}
+	
 	public ItemSale(Product product) {
 		this.product = product;
 	}
-
-	public ItemSale() {
-	}
-
-	/*
-	 * Calculate cashback for item
-	 * 
-	 */
-//	public void calculateCashback() {
-//		this.cashbackPercentage = new Cashback().calculate(this.product, this.sale.getData());
-//		
-//		BigDecimal discount = BigDecimal.ONE.subtract(this.cashbackPercentage.divide(new BigDecimal(100)));
-//		this.price = this.getProduct().getPrice().multiply(discount);
-//		
-//		this.cashbackValue = this.product.getPrice().subtract(this.price);
-//	}
-//	
-//	public void calculateCashback(BigDecimal cashbackPercentage2) {
-//		BigDecimal discount = BigDecimal.ONE.subtract(cashbackPercentage2.divide(new BigDecimal(100)));
-//		this.price = this.getProduct().getPrice().multiply(discount);
-//		
-//		this.cashbackValue = this.product.getPrice().subtract(this.price);		
-//	}
-	
-	/*@PrePersist
-	public void prePersist() {
-		calculateCashback();
-		System.out.println("Salvando o item " + this.product.getName());
-	}*/
-	
-	
-//	public void calculateCashback() {
-//		this.cashbackPercentage = new Cashback().calculate(this.product, this.sale.getData());
-//		this.price = this.getProduct().getPrice().multiply(this.cashbackPercentage);
-//		this.savedValue = this.product.getPrice().subtract(this.price);
-//	}
 	
 	public BigDecimal getCashbackPercentage() {
 		return cashbackPercentage;

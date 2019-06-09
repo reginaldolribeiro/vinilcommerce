@@ -46,31 +46,6 @@ public class Sale {
 
 	}
 
-//	@PostPersist
-//	public void prePersist() {
-//		calculateCashback();
-//		System.out.println("Salvando a venda do " + this.client + " em " + this.data);
-//	}
-
-//	public void calculateCashback() {
-//		Cashback cashback = new Cashback();
-////		this.itens.forEach(item -> {
-////			BigDecimal cashbackProduct = cashback.calculate(item.getProduct(), this.data);
-////			this.totalCashback = cashbackProduct.plus();
-////			System.out.println(this.totalCashback);
-////		});
-//		
-//		for (ItemSale item : itens) {
-//			System.out.println(item);
-//			BigDecimal cashbackProduct = cashback.calculate(item.getProduct(), this.data);
-//			item.getProduct().setPrice(item.getProduct().getPrice().multiply(cashbackProduct));
-//			this.totalCashback = cashbackProduct.plus();
-//			System.out.println(this.totalCashback);
-//			this.totalValue = item.getProduct().getPrice().plus();
-//			System.out.println("Valor total:" + totalValue);
-//		}
-//	}
-
 	public Long getId() {
 		return id;
 	}

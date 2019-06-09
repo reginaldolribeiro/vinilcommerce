@@ -85,10 +85,7 @@ public class VinilcommerceApplicationTests {
     @Test
     public void searchPaginateSalesByDates() {
     	String url = ENDPOINT_SALE + "?start=01/06/2019&end=09/06/2019&size=1&page=0";
-    	RestAssured.given().get(url).then().statusCode(200).and().contentType(ContentType.JSON);
-    	List<Product> sales = RestAssured.given().get(url).andReturn().getBody().jsonPath().getList("content", Product.class);
-    	System.out.println(sales.size());
-    	//assertTrue(!sales.isEmpty());
+    	RestAssured.given().get(url).then().statusCode(200).and().contentType(ContentType.JSON);    	
     }
     
     // consultar a venda por ID

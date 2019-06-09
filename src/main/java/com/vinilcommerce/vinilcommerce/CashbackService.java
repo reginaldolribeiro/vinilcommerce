@@ -1,7 +1,6 @@
 package com.vinilcommerce.vinilcommerce;
 
 import java.math.BigDecimal;
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 
 import javax.persistence.NoResultException;
@@ -10,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.vinilcommerce.model.Cashback;
-import com.vinilcommerce.model.Genre;
 import com.vinilcommerce.model.ItemSale;
 import com.vinilcommerce.model.Product;
 import com.vinilcommerce.repository.CashbackRepository;
@@ -28,16 +26,11 @@ public class CashbackService {
 		itemSale.setCashbackPercentage(cashbackPercentage);
 		
 		BigDecimal discount = BigDecimal.ONE.subtract(cashbackPercentage.divide(new BigDecimal(100)));
-//		this.price = this.getProduct().getPrice().multiply(discount);
 		
 		itemSale.setPrice(itemSale.getProduct().getPrice().multiply(discount));
 		itemSale.setCashbackValue(itemSale.getProduct().getPrice().subtract(itemSale.getPrice()));
 		
 		return itemSale;
-		
-//		this.cashbackPercentage = new Cashback().calculate(this.product, this.sale.getData());
-//		this.price = this.getProduct().getPrice().multiply(this.cashbackPercentage);
-//		this.savedValue = this.product.getPrice().subtract(this.price);
 		
 	}
 

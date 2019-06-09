@@ -65,36 +65,5 @@ public class Cashback {
 	public void setValue(BigDecimal value) {
 		this.value = value;
 	}
-	
-	/*public BigDecimal calculate(Product product, LocalDate data) {
-
-	String diaDaSemana = data.getDayOfWeek().name();
-	
-	System.out.println(product.getGenre());
-	System.out.println(Genre.ROCK);
-
-	if (product.getGenre().equals(Genre.ROCK.name())) {
-
-		if (diaDaSemana.equals(DiaSemana.SATURDAY.name())) {
-			//return BigDecimal.ONE.subtract(new BigDecimal(40).divide(new BigDecimal(100)));
-			return new BigDecimal(40);
-		} else if (diaDaSemana.equals("Segunda-feira")) {
-			//return BigDecimal.ONE.subtract(new BigDecimal(10).divide(new BigDecimal(100)));
-			return new BigDecimal(10);
-		}
-	} else if (product.getGenre().equals(Genre.POP.name())) {
-
-		if (diaDaSemana.equals(DiaSemana.SATURDAY.name())) {
-			//return BigDecimal.ONE.subtract(new BigDecimal(25).divide(new BigDecimal(100)));
-			return new BigDecimal(25);
-		} else if (diaDaSemana.equals("Segunda-feira")) {
-			//return BigDecimal.ONE.subtract(new BigDecimal(7).divide(new BigDecimal(100)));
-			return new BigDecimal(7);
-		}
-
-	}
-
-	return BigDecimal.ZERO;
-}*/
 
 }

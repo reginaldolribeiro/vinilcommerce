@@ -31,8 +31,6 @@ public class SpotifyService {
 
 		Long count = productRepository.count();
 
-		System.out.println("Albums quantity: " + count);
-
 		if (count == 0) {
 			List<Genre> genres = Arrays.asList(Genre.values());
 			genres.stream().forEach(genre -> {
