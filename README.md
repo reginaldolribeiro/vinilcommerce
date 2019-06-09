@@ -49,10 +49,7 @@ Utilizada API do Spotify para carga inicial dos discos.
           }
         }
       ]
-    }
-    
-  #### Endpoints RESTFul
-   - http://localhost:8080/api
+    }   
    
   ### Setup
   1. Realizar o download do projeto aqui no Github.
@@ -69,3 +66,4 @@ Utilizada API do Spotify para carga inicial dos discos.
   5. MySQL
   6. Flyway
   7. Travis CI
+  8. Spotify Web API Java: https://github.com/thelinmichael/spotify-web-api-java
