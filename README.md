@@ -6,25 +6,25 @@ Utilizada API do Spotify para carga inicial dos discos.
 
   #### Endpoints RESTFull
   1. (GET) Consultar o catálogo de discos de forma paginada, filtrando por gênero e
-  ordenando de forma crescente pelo nome do disco:
-  
-    - Sem paginação: http://localhost:8080/api/album?genre=ROCK
-    
-    - Com paginação: http://localhost:8080/api/album?genre=ROCK&size=100&page=1
+  ordenando de forma crescente pelo nome do disco:   
+   - Sem paginação: http://localhost:8080/api/album?genre=ROCK
+   - Com paginação: http://localhost:8080/api/album?genre=ROCK&size=100&page=1
 
   2. (GET) Consultar o disco pelo seu identificador: 
-    - http://localhost:8080/api/album/200
+   - http://localhost:8080/api/album/200
 
   3. (GET) Consultar todas as vendas efetuadas de forma paginada, filtrando pelo range
   de datas (inicial e final) da venda e ordenando de forma decrescente pela
   data da venda:    
-    - Sem paginação: http://localhost:8080/api/sale?start=01/06/2019&end=10/06/2019
-    - Com paginação: http://localhost:8080/api/sale?start=01/06/2019&end=10/06/2019&size=1&page=0
+   - Sem paginação: http://localhost:8080/api/sale?start=01/06/2019&end=10/06/2019
+   - Com paginação: http://localhost:8080/api/sale?start=01/06/2019&end=10/06/2019&size=1&page=0
 
-  4. (GET) Consultar uma venda pelo seu identificador: http://localhost:8080/api/sale/1
+  4. (GET) Consultar uma venda pelo seu identificador: 
+   - http://localhost:8080/api/sale/1
 
   5. (POST) Registrar uma nova venda de discos calculando o valor total de cashback
-  considerando a tabela: http://localhost:8080/api/sale
+  considerando a tabela: 
+   - http://localhost:8080/api/sale
     
     Body do request JSON (Exemplo)
     
