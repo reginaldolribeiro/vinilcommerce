@@ -1,8 +1,17 @@
 [![Build Status](https://travis-ci.org/reginaldolribeiro/vinilcommerce.svg?branch=master)](https://travis-ci.org/reginaldolribeiro/vinilcommerce)
 # Vinilcommerce
 
-Backend de um ecommerce de discos de vinil, com cashback, expondo uma API RESTFull com dados no formato JSON. 
-Utilizada API do Spotify para carga inicial dos discos.
+Backend de um ecommerce de discos de vinil com cashback, expondo uma API RESTFull com dados no formato JSON. 
+Utilizada API do Spotify para carga inicial dos discos por gênero musical (Rock, Pop, MPB e Classic).
+
+#### Regras de cashback
+
+| Gênero  | Domingo | Segunda | Terça | Quarta | Quinta | Sexta | Sábado |
+|---------|---------|---------|-------|--------|--------|-------|--------|
+| POP     | 25%     | 7%      | 6%    | 2%     | 10%    | 15%   | 20%    |
+| MPB     | 30%     | 5%      | 10%   | 15%    | 20%    | 25%   | 30%    |
+| CLASSIC | 35%     | 3%      | 5%    | 8%     | 13%    | 18%   | 25%    |
+| ROCK    | 40%     | 10%     | 15%   | 15%    | 15%    | 20%   | 40%    |
 
   #### Endpoints RESTFull
   1. (GET) Consultar o catálogo de discos de forma paginada, filtrando por gênero e
@@ -51,14 +60,14 @@ Utilizada API do Spotify para carga inicial dos discos.
       ]
     }   
    
-  ### Setup
+  #### Setup
   1. Realizar o download do projeto aqui no Github.
   2. Extrair o arquivo vinilcommerce.zip
   3. Entrar na pasta do projeto.
   4. Executar o comando mvn spring-boot:run
   5. Após a aplicação subir, acesse a URL http://localhost:8080/
   
-  ### Tecnologias utilizadas
+  #### Tecnologias utilizadas
   1. Java
   2. Spring Boot
   3. Testes unitários com JUnit e Rest Assured
