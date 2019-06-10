@@ -1,4 +1,4 @@
-package com.vinilcommerce.vinilcommerce;
+package com.vinilcommerce.service;
 
 import java.io.IOException;
 import java.math.BigDecimal;

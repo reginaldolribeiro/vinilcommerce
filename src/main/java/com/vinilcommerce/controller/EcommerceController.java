@@ -1,10 +1,6 @@
-package com.vinilcommerce.vinilcommerce;
+package com.vinilcommerce.controller;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,14 +8,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.vinilcommerce.model.Customer;
@@ -30,6 +24,7 @@ import com.vinilcommerce.model.Sale;
 import com.vinilcommerce.repository.CustomerRepository;
 import com.vinilcommerce.repository.ProductRepository;
 import com.vinilcommerce.repository.SaleRepository;
+import com.vinilcommerce.service.CashbackService;
 
 @RestController
 @RequestMapping("/api")
@@ -54,10 +49,8 @@ public class EcommerceController {
 	 * @return
 	 */
 	@GetMapping("/album")
-	public ResponseEntity<Page<Product>> findAll(@RequestParam(value = "genre", required = false) String genre,
+	public ResponseEntity<Page<Product>> findAlbumsByGenre(@RequestParam(value = "genre", required = false) String genre,
 			Pageable pageable) {
-
-		Genre genreSearched;
 		
 		if(genre == null) {
 			Page<Product> products = productRepository.findAll(pageable);	
@@ -67,6 +60,7 @@ public class EcommerceController {
 			return new ResponseEntity<>(products, HttpStatus.OK);
 		}
 		
+		Genre genreSearched;
 		try {
 			genreSearched = Genre.getEnum(genre.toUpperCase());
 		} catch (Exception e) {
@@ -77,8 +71,8 @@ public class EcommerceController {
 		if (products.isEmpty()) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-
 		return new ResponseEntity<>(products, HttpStatus.OK);
+		
 	}
 
 	/**
@@ -87,7 +81,7 @@ public class EcommerceController {
 	 * @return
 	 */
 	@GetMapping("/album/{id}")
-	public ResponseEntity<Product> findProductById(@PathVariable Long id) {
+	public ResponseEntity<Product> findAlbumById(@PathVariable Long id) {
 		Product product = productRepository.findById(id).orElse(null);
 		if (product == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -114,15 +108,14 @@ public class EcommerceController {
 				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 			}
 			return new ResponseEntity<>(sales, HttpStatus.OK);
-			//return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		
 		Page<Sale> sales = saleRepository.findAllByDataBetweenOrderByDataDesc(start, end, pageable);
 		if (sales.isEmpty()) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-
 		return new ResponseEntity<>(sales, HttpStatus.OK);
+		
 	}
 
 	/**
@@ -133,17 +126,10 @@ public class EcommerceController {
 	 */
 	@GetMapping("/sale/{id}")
 	public ResponseEntity<Sale> findSaleById(@PathVariable Long id) {
-		System.out.println("Sale " + id);
-		
 		return saleRepository.findById(id)
 				.map(sale -> new ResponseEntity<Sale>(sale, HttpStatus.OK))
 				.orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
 		
-		/*if (sale == null) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-		return new ResponseEntity<Sale>(sale, HttpStatus.OK);*/
-
 	}
 
 	/**
@@ -156,8 +142,6 @@ public class EcommerceController {
 	@PostMapping("/sale")
 	public ResponseEntity<Sale> createSale(@RequestBody Sale sale) {
 
-		System.out.println(sale);
-		
 		Long customerId = sale.getCustomer().getId();
 		Customer customer = customerRepository.findById(customerId).orElse(null);
 		if(customer == null) {

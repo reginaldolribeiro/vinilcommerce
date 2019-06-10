@@ -1,4 +1,4 @@
-package com.vinilcommerce.vinilcommerce;
+package com.vinilcommerce.service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -34,7 +34,7 @@ public class CashbackService {
 		
 	}
 
-	public BigDecimal getCashback(Product product, LocalDate data) {
+	private BigDecimal getCashback(Product product, LocalDate data) {
 		try {
 			Cashback cashback = repository.findByGenreAndDayOfWeek(product.getGenre(), data.getDayOfWeek());			
 			return cashback.getValue();

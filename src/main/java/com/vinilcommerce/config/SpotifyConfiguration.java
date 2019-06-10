@@ -1,4 +1,4 @@
-package com.vinilcommerce.vinilcommerce;
+package com.vinilcommerce.config;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.vinilcommerce.service.SpotifyService;
 import com.wrapper.spotify.SpotifyApi;
 import com.wrapper.spotify.exceptions.SpotifyWebApiException;
 import com.wrapper.spotify.model_objects.credentials.ClientCredentials;
