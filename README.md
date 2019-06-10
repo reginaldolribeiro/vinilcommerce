@@ -59,6 +59,11 @@ Utilizada API do Spotify para carga inicial dos discos por gênero musical (Rock
       ]
     }   
    
+   6. CRUD Albuns: http://localhost:8080/products
+   7. CRUD Clientes: http://localhost:8080/customers
+   8. CRUD Vendas: http://localhost:8080/sales
+   
+   
   #### Setup
   1. Instalar o banco de dados MySQL, versão mais recente.
   2. Criar o database chamado "cashback".
