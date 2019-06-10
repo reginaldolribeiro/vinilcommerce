@@ -12,7 +12,7 @@ Utilizada API do Spotify para carga inicial dos discos por gênero musical (Rock
 | CLASSIC | 35%     | 3%      | 5%    | 8%     | 13%    | 18%   | 25%    |
 | ROCK    | 40%     | 10%     | 15%   | 15%    | 15%    | 20%   | 40%    |
 
-  #### Endpoints RESTFull
+  #### Endpoints REST
   1. (GET) Consultar o catálogo de discos de forma paginada, filtrando por gênero e
   ordenando de forma crescente pelo nome do disco:   
    - Sem paginação: http://localhost:8080/api/album?genre=rock
