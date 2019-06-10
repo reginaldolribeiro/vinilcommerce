@@ -75,5 +75,4 @@ Utilizada API do Spotify para carga inicial dos discos por gênero musical (Rock
   4. Maven
   5. MySQL
   6. Flyway
-  7. Travis CI
-  8. Spotify Web API Java: https://github.com/thelinmichael/spotify-web-api-java
+  7. Spotify Web API Java: https://github.com/thelinmichael/spotify-web-api-java
