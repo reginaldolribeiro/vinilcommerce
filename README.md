@@ -16,7 +16,7 @@ Utilizada API do Spotify para carga inicial dos discos por gênero musical (Rock
   1. (GET) Consultar o catálogo de discos de forma paginada, filtrando por gênero e
   ordenando de forma crescente pelo nome do disco:   
    - Sem paginação: http://localhost:8080/api/album?genre=rock
-   - Com paginação: http://localhost:8080/api/album?genre=rock&size=100&page=1
+   - Com paginação: http://localhost:8080/api/album?genre=rock&size=30&page=1
 
   2. (GET) Consultar o disco pelo seu identificador: 
    - http://localhost:8080/api/album/200
