@@ -74,5 +74,5 @@ Utilizada API do Spotify para carga inicial dos discos por gênero musical (Rock
   3. Testes unitários com JUnit e Rest Assured
   4. Maven
   5. MySQL
-  6. Flyway
-  7. Spotify Web API Java: https://github.com/thelinmichael/spotify-web-api-java
+  6. [Flyway](https://flywaydb.org/)
+  7. [Spotify Web API Java](https://github.com/thelinmichael/spotify-web-api-java)
