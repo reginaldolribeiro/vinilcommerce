@@ -66,7 +66,7 @@ Utilizada API do Spotify para carga inicial dos discos por gênero musical (Rock
    
   #### Setup
   1. Instalar o banco de dados MySQL, versão mais recente.
-  2. Criar o database chamado "cashback".
+  2. Criar o database chamado "cashback" com usuario "root" e senha "123456".
   2. Realizar o download do projeto aqui no Github.
   2. Extrair o arquivo vinilcommerce.zip
   3. Entrar na pasta do projeto.
