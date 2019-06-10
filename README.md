@@ -1,4 +1,3 @@
-[![Build Status](https://travis-ci.org/reginaldolribeiro/vinilcommerce.svg?branch=master)](https://travis-ci.org/reginaldolribeiro/vinilcommerce)
 # Vinilcommerce
 
 Backend de um ecommerce de discos de vinil com cashback, expondo uma API RESTFull com dados no formato JSON. 
