@@ -1,29 +1,34 @@
 package com.vinilcommerce.vinilcommerce;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
 import java.io.IOException;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.vinilcommerce.model.*;
+import com.vinilcommerce.repository.CustomerRepository;
+import com.vinilcommerce.repository.ProductRepository;
+import io.restassured.specification.RequestSpecification;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import com.vinilcommerce.model.Genre;
-import com.vinilcommerce.model.Product;
 
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 
+import static org.junit.Assert.*;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+//@ActiveProfiles("test")
 public class VinilcommerceApplicationTests {
 
 	private static final String ENDPOINT_ALBUM = "/api/album";
@@ -31,6 +36,11 @@ public class VinilcommerceApplicationTests {
 
 	private Response responseAlbum;
 	private Response responseSale;
+
+	@Autowired
+	private CustomerRepository customerRepository;
+	@Autowired
+	private ProductRepository productRepository;
 
 	@LocalServerPort
 	int port;
@@ -47,7 +57,7 @@ public class VinilcommerceApplicationTests {
 	@Test
 	public void checkHeaderResponse() {
 		this.responseAlbum.then().statusCode(200).and().contentType(ContentType.JSON);
-		this.responseSale.then().statusCode(200).and().contentType(ContentType.JSON);
+		//this.responseSale.then().statusCode(200).and().contentType(ContentType.JSON);
 	}
 
 	@Test
@@ -86,16 +96,117 @@ public class VinilcommerceApplicationTests {
 	}
 
 	@Test
-	public void searchPaginateSalesByDates() {
-		String url = ENDPOINT_SALE + "?start=01/06/2019&end=09/06/2019&size=1&page=0";
-		RestAssured.given().get(url).then().statusCode(200).and().contentType(ContentType.JSON);
+	public void createSale(){
+
+		Customer customer = this.customerRepository.findById(3L).orElse(null);
+		Product product1 = this.productRepository.findById(25L).orElse(null);
+		Product product2 = this.productRepository.findById(56L).orElse(null);
+
+		Sale sale = new Sale();
+		sale.setCustomer(customer);
+
+		ItemSale itemSale1 = new ItemSale();
+		itemSale1.setProduct(product1);
+
+		ItemSale itemSale2 = new ItemSale();
+		itemSale2.setProduct(product2);
+
+		List<ItemSale> itens = new ArrayList<>();
+		itens.add(itemSale1);
+		itens.add(itemSale2);
+
+		sale.setItens(itens);
+
+		System.out.print(sale);
+
+		assertTrue(10 == 10);
+
+		RequestSpecification request = RestAssured.given();
+
+		Response response = request
+					.contentType("application/json")
+					.accept("application/json")
+					.body(sale)
+				.when()
+					.post(ENDPOINT_SALE)
+				.then()
+					.statusCode(201)
+					.contentType("application/json")
+				.extract()
+				.response();
+
+		System.out.print("*** RESPONSE " + response);
+		System.out.print("*** RESPONSE " + response.statusCode());
+
+		assertTrue(response.statusCode() == 201);
+
+		String totalValue = response.jsonPath().getString("totalValue");
+		System.out.print("*** Total value " + totalValue);
+
+		assertTrue(totalValue.equals("59.008"));
+
 	}
 
-	@Test
-	public void searchSaleById() {
-		String id = "1";
-		String url = ENDPOINT_SALE + "/" + id;
-		RestAssured.given().get(url).then().statusCode(200).and().contentType(ContentType.JSON);
-	}
+//	@Test
+//	public void createSale(){
+//
+//		Customer customer = this.customerRepository.findById(3L).orElse(null);
+//		Product product1 = this.productRepository.findById(25L).orElse(null);
+//		Product product2 = this.productRepository.findById(56L).orElse(null);
+//
+//		Sale sale = new Sale();
+//		sale.setCustomer(customer);
+//
+//		ItemSale itemSale1 = new ItemSale();
+//		itemSale1.setProduct(product1);
+//
+//		ItemSale itemSale2 = new ItemSale();
+//		itemSale2.setProduct(product2);
+//
+//		List<ItemSale> itens = new ArrayList<>();
+//		itens.add(itemSale1);
+//		itens.add(itemSale2);
+//
+//		sale.setItens(itens);
+//
+//		System.out.print(sale);
+//
+//		assertTrue(10 == 10);
+//
+//		RequestSpecification request = RestAssured.given();
+//
+//		Response response = request
+//				.contentType("application/json")
+//				.accept("application/json")
+//				.body(sale)
+//				.when()
+//				.post(ENDPOINT_SALE)
+//				.then()
+//				.statusCode(201)
+//				.contentType("application/json")
+//				.extract()
+//				.response();
+//
+//		System.out.print("*** RESPONSE " + response);
+//		System.out.print("*** RESPONSE " + response.statusCode());
+//
+//		assertTrue(response.statusCode() == 201);
+//
+//		//response.jsonPath().getString("")
+//
+//	}
+
+//	@Test
+//	public void searchPaginateSalesByDates() {
+//		String url = ENDPOINT_SALE + "?start=01/11/2019&end=10/11/2019&size=1&page=0";
+//		RestAssured.given().get(url).then().statusCode(200).and().contentType(ContentType.JSON);
+//	}
+//
+//	@Test
+//	public void searchSaleById() {
+//		String id = "1";
+//		String url = ENDPOINT_SALE + "/" + id;
+//		RestAssured.given().get(url).then().statusCode(200).and().contentType(ContentType.JSON);
+//	}
 
 }
