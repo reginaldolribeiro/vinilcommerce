@@ -1,31 +1,29 @@
 package com.vinilcommerce.vinilcommerce;
 
-import com.vinilcommerce.model.Genre;
-import com.vinilcommerce.model.Product;
+import com.vinilcommerce.model.*;
+import com.vinilcommerce.repository.CustomerRepository;
 import com.vinilcommerce.repository.ProductRepository;
-import io.restassured.RestAssured;
-import io.restassured.http.ContentType;
-import io.restassured.response.Response;
-import org.assertj.core.api.Assertions;
+import com.vinilcommerce.repository.SaleRepository;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.BDDMockito;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.swing.text.html.Option;
 import java.math.BigDecimal;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,61 +40,43 @@ public class ApiTest {
 
     @MockBean
     public ProductRepository productRepository;
+    @MockBean
+    public SaleRepository saleRepository;
+    @MockBean
+    public CustomerRepository customerRepository;
 
     @Autowired
     private TestRestTemplate restTemplate;
 
-//    @Test
-//    public void itShouldReturn200WhenFindAlbumByGenre() {
-//        String genre = "ROCK";
-//        String url = ENDPOINT_ALBUM + "/" + genre;
-//
-//        Product youthanasiaAlbum = new Product();
-//        youthanasiaAlbum.setId(1L);
-//        youthanasiaAlbum.setArtistName("Megadeth");
-//        youthanasiaAlbum.setGenre(Genre.ROCK);
-//        youthanasiaAlbum.setName("Youthanasia");
-//        youthanasiaAlbum.setPrice(new BigDecimal(50));
-//
-//        Product countdownToExtinction = new Product();
-//        countdownToExtinction.setId(1L);
-//        countdownToExtinction.setArtistName("Megadeth");
-//        countdownToExtinction.setGenre(Genre.ROCK);
-//        countdownToExtinction.setName("Countdown to Extinction");
-//        countdownToExtinction.setPrice(new BigDecimal(50));
-//
-//        Page<Product> page = Mockito.mock(Page.class);
-//        System.out.print("Paget content " + page.getContent().);
-//
-//
-//        List<Product> albums = Arrays.asList(youthanasiaAlbum, countdownToExtinction);
-//        //"http://localhost:8080/products{?page,size,sort}",
-//
-////        Pageable pageable = null;
-////        BDDMockito.when(this.productRepository.findByGenreOrderByName(Genre.ROCK, null)).thenReturn(albums);
-////
-////        ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
-////        Assert.assertEquals(response.getStatusCodeValue(), 200);
-//
-//    }
+    private Product youthanasia;
+    private Product countdownToExtinction;
+
+    @Before
+    public void init(){
+        youthanasia = new Product("Youthanasia", "Megadeth", Genre.ROCK, new BigDecimal(50));
+        youthanasia.setId(1L);
+
+        countdownToExtinction = new Product("Countdown to Extinction", "Megadeth", Genre.ROCK, new BigDecimal(50));
+        countdownToExtinction.setId(1L);
+    }
 
     @Test
-    public void itShouldReturn200WhenFindAlbumById() {
-        String id = "1";
-        String url = ENDPOINT_ALBUM + "/" + id;
+    public void itShouldReturn200WhenFindAlbumByGenre() {
 
-        Product product = new Product();
-        product.setId(1L);
-        product.setArtistName("Megadeth");
-        product.setGenre(Genre.ROCK);
-        product.setName("Youthanasia");
-        product.setPrice(new BigDecimal(50));
+        String url = ENDPOINT_ALBUM + "?genre=ROCK&size=10&page=0";
 
-        BDDMockito.when(this.productRepository.findById(product.getId())).thenReturn(Optional.of(product));
+        List<Product> products = new ArrayList<>();
+        products.add(youthanasia);
+        products.add((countdownToExtinction));
 
+        //Page<Product> albums = Mockito.mock(Page.class);
+        Page<Product> albums = new PageImpl(products);
+        Pageable pageable = PageRequest.of(0, 10);
+
+        BDDMockito.when(this.productRepository.findByGenreOrderByName(Genre.ROCK, pageable)).thenReturn(albums);
         ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
-        Assert.assertEquals(response.getStatusCodeValue(), 200);
 
+        Assert.assertEquals(response.getStatusCodeValue(), 200);
     }
 
     @Test
@@ -104,14 +84,7 @@ public class ApiTest {
         String id = "1";
         String url = ENDPOINT_ALBUM + "/" + id;
 
-        Product product = new Product();
-        product.setId(1L);
-        product.setArtistName("Megadeth");
-        product.setGenre(Genre.ROCK);
-        product.setName("Youthanasia");
-        product.setPrice(new BigDecimal(50));
-
-        BDDMockito.when(this.productRepository.findById(product.getId())).thenReturn(Optional.of(product));
+        BDDMockito.when(this.productRepository.findById(youthanasia.getId())).thenReturn(Optional.of(youthanasia));
 
 //        Response response = RestAssured
 //                .given()
@@ -126,12 +99,69 @@ public class ApiTest {
 //        Assert.assertEquals(name, product.getName());
 
         ResponseEntity<Product> response = restTemplate.getForEntity(url, Product.class);
-        System.out.print("*****Response " + response.getBody());
 
-        Assert.assertEquals(product.getName(), response.getBody().getName());
-        Assert.assertEquals(product.getArtistName(), response.getBody().getArtistName());
-
+        Assert.assertEquals(response.getStatusCodeValue(), 200);
+        Assert.assertEquals(youthanasia.getName(), response.getBody().getName());
+        Assert.assertEquals(youthanasia.getArtistName(), response.getBody().getArtistName());
     }
+
+    @Test
+    public void itShouldReturnSaleById(){
+
+        Customer customer = this.customerRepository.findById(3L).orElse(null);
+        Product product1 = this.productRepository.findById(25L).orElse(null);
+        Product product2 = this.productRepository.findById(56L).orElse(null);
+
+        Sale sale = new Sale();
+        sale.setId(1L);
+        sale.setCustomer(customer);
+
+        ItemSale itemSale1 = new ItemSale();
+        itemSale1.setProduct(product1);
+
+        ItemSale itemSale2 = new ItemSale();
+        itemSale2.setProduct(product2);
+
+        List<ItemSale> itens = new ArrayList<>();
+        itens.add(itemSale1);
+        itens.add(itemSale2);
+
+        sale.setItens(itens);
+
+        String url = ENDPOINT_SALE + "/1";
+
+        BDDMockito.when(this.saleRepository.findById(sale.getId())).thenReturn(Optional.of(sale));
+        ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+
+        Assert.assertEquals(response.getStatusCodeValue(), 200);
+    }
+
+//    @Test
+//    public void itShouldReturnSaleById(){
+//        Customer customer = this.customerRepository.findById(3L).orElse(null);
+//        Product product1 = this.productRepository.findById(25L).orElse(null);
+//        Product product2 = this.productRepository.findById(56L).orElse(null);
+//
+//        Sale sale = new Sale();
+//        sale.setCustomer(customer);
+//
+//        ItemSale itemSale1 = new ItemSale();
+//        itemSale1.setProduct(product1);
+//
+//        ItemSale itemSale2 = new ItemSale();
+//        itemSale2.setProduct(product2);
+//
+//        List<ItemSale> itens = new ArrayList<>();
+//        itens.add(itemSale1);
+//        itens.add(itemSale2);
+//
+//        sale.setItens(itens);
+//
+//        System.out.print(sale);
+//
+//        BDDMockito.when().thenReturn();
+//
+//    }
 
 
 }

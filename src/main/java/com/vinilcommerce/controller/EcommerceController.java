@@ -51,8 +51,10 @@ public class EcommerceController {
 	@GetMapping("/album")
 	public ResponseEntity<Page<Product>> findAlbumsByGenre(@RequestParam(value = "genre", required = false) String genre,
 			Pageable pageable) {
-		
-		if(genre == null) {
+
+		System.out.print("**** PAgeable " + pageable);
+
+			if(genre == null) {
 			Page<Product> products = productRepository.findAll(pageable);	
 			if (products.isEmpty()) {
 				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -68,7 +70,7 @@ public class EcommerceController {
 		}
 
 		Page<Product> products = productRepository.findByGenreOrderByName(genreSearched, pageable);
-		if (products.isEmpty()) {
+		if (products == null || products.isEmpty()) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 		return new ResponseEntity<>(products, HttpStatus.OK);
