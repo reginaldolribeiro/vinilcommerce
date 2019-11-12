@@ -1,6 +1,7 @@
 package com.vinilcommerce.vinilcommerce;
 
 import com.vinilcommerce.model.Customer;
+import com.vinilcommerce.model.Genre;
 import com.vinilcommerce.model.Sale;
 import com.vinilcommerce.repository.CustomerRepository;
 import com.vinilcommerce.repository.SaleRepository;
@@ -50,7 +51,6 @@ public class CustomerRepositoryTest {
     public void itShouldReturnCustomer(){
         List<Customer> customers = this.customerRepository.findAll();
         Assertions.assertThat(customers.size()).isNotZero();
-        Assertions.assertThat(customers.size()).isEqualTo(3);
     }
 
 }

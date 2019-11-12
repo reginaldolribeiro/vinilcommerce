@@ -30,7 +30,7 @@ import java.util.Optional;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
-public class ApiTest {
+public class ApiUnitTest {
 
     private static final String ENDPOINT_ALBUM = "/api/album";
     private static final String ENDPOINT_SALE = "/api/sale";

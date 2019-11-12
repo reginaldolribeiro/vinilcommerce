@@ -45,7 +45,6 @@ public class ProductRepositoryTest {
         Page<Product> product = this.productRepository.findByGenreOrderByName(Genre.ROCK, null);
         System.out.print("**PRODUCT " + product.getContent().size());
 
-        assertThat(product.getContent().size()).isEqualTo(2);
         assertThat(product.getContent().get(0).getGenre()).isEqualTo(Genre.ROCK);
     }
 
