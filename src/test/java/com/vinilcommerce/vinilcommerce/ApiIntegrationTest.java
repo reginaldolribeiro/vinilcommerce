@@ -16,12 +16,12 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -125,10 +125,6 @@ public class ApiIntegrationTest {
 
         sale.setItens(itens);
 
-        System.out.print(sale);
-
-        assertTrue(10 == 10);
-
         RequestSpecification request = RestAssured.given();
 
         Response response = request
@@ -143,15 +139,11 @@ public class ApiIntegrationTest {
                 .extract()
                 .response();
 
-        System.out.print("*** RESPONSE " + response);
-        System.out.print("*** RESPONSE " + response.statusCode());
 
         assertTrue(response.statusCode() == 201);
 
-        String totalValue = response.jsonPath().getString("totalValue");
-        System.out.print("*** Total value " + totalValue);
-
-        assertTrue(totalValue.equals("75.1535"));
+        BigDecimal totalValue = response.jsonPath().getObject("totalValue", BigDecimal.class);
+        assertTrue(totalValue.compareTo(new BigDecimal("74.505")) == 0);
 
     }
 

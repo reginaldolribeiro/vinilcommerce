@@ -2,6 +2,7 @@ package com.vinilcommerce.controller;
 
 import java.time.LocalDate;
 
+import com.vinilcommerce.service.SaleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -41,6 +42,9 @@ public class EcommerceController {
 	
 	@Autowired
 	private CustomerRepository customerRepository;
+
+	@Autowired
+	private SaleService saleService;
 
 	/**
 	 * 1. Consultar o catálogo de discos de forma paginada, filtrando por gênero e
@@ -144,31 +148,41 @@ public class EcommerceController {
 	@PostMapping("/sale")
 	public ResponseEntity<Sale> createSale(@RequestBody Sale sale) {
 
-		Long customerId = sale.getCustomer().getId();
-		Customer customer = customerRepository.findById(customerId).orElse(null);
-		if(customer == null) {
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-		sale.setCustomer(customer);
-		
-		for (ItemSale item : sale.getItens()) {
-
-			Long idProduct = item.getProduct().getId();
-			Product product = productRepository.findById(idProduct).orElse(null);
-
-			if (product == null) {
-				return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-			}
-
-			item.setProduct(product);
-			item.setSale(sale);
-			item = cashbackService.calculate(item);
-		}
-
-		sale.calculateTotalCashback();
-		sale = saleRepository.save(sale);
+		sale = saleService.createSale(sale);
+		if(sale == null) return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 
 		return new ResponseEntity<Sale>(sale, HttpStatus.CREATED);
 	}
+
+//	@PostMapping("/sale")
+//	public ResponseEntity<Sale> createSale(@RequestBody Sale sale) {
+//
+//		Long customerId = sale.getCustomer().getId();
+//		Customer customer = customerRepository.findById(customerId).orElse(null);
+//		if(customer == null) {
+//			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//		}
+//		sale.setCustomer(customer);
+//
+//		for (ItemSale item : sale.getItens()) {
+//
+//			Long idProduct = item.getProduct().getId();
+//			Product product = productRepository.findById(idProduct).orElse(null);
+//			System.out.print("Product " + product);
+//
+//			if (product == null) {
+//				return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//			}
+//
+//			item.setProduct(product);
+//			item.setSale(sale);
+//			item = cashbackService.calculate(item);
+//		}
+//
+//		sale.calculateTotalCashback();
+//		sale = saleRepository.save(sale);
+//
+//		return new ResponseEntity<Sale>(sale, HttpStatus.CREATED);
+//	}
 
 }
