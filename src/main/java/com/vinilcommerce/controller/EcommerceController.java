@@ -39,7 +39,7 @@ public class EcommerceController {
 
 	@Autowired
 	private CashbackService cashbackService;
-	
+
 	@Autowired
 	private CustomerRepository customerRepository;
 
@@ -49,23 +49,23 @@ public class EcommerceController {
 	/**
 	 * 1. Consultar o catálogo de discos de forma paginada, filtrando por gênero e
 	 * ordenando de forma crescente pelo nome do disco;
-	 * 
+	 *
 	 * @return
 	 */
 	@GetMapping("/album")
 	public ResponseEntity<Page<Product>> findAlbumsByGenre(@RequestParam(value = "genre", required = false) String genre,
-			Pageable pageable) {
+														   Pageable pageable) {
 
 		System.out.print("**** PAgeable " + pageable);
 
-			if(genre == null) {
-			Page<Product> products = productRepository.findAll(pageable);	
+		if(genre == null) {
+			Page<Product> products = productRepository.findAll(pageable);
 			if (products.isEmpty()) {
 				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 			}
 			return new ResponseEntity<>(products, HttpStatus.OK);
 		}
-		
+
 		Genre genreSearched;
 		try {
 			genreSearched = Genre.getEnum(genre.toUpperCase());
@@ -78,12 +78,12 @@ public class EcommerceController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 		return new ResponseEntity<>(products, HttpStatus.OK);
-		
+
 	}
 
 	/**
 	 * 2. Consulta o disco pelo seu identificador.
-	 * 
+	 *
 	 * @return
 	 */
 	@GetMapping("/album/{id}")
@@ -99,7 +99,7 @@ public class EcommerceController {
 	 * 3. Consultar todas as vendas efetuadas de forma paginada, filtrando pelo
 	 * range de datas (inicial e final) da venda e ordenando de forma decrescente
 	 * pela data da venda;
-	 * 
+	 *
 	 * @return
 	 */
 	@GetMapping("/sale")
@@ -115,18 +115,18 @@ public class EcommerceController {
 			}
 			return new ResponseEntity<>(sales, HttpStatus.OK);
 		}
-		
+
 		Page<Sale> sales = saleRepository.findAllByDataBetweenOrderByDataDesc(start, end, pageable);
 		if (sales.isEmpty()) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 		return new ResponseEntity<>(sales, HttpStatus.OK);
-		
+
 	}
 
 	/**
 	 * 4. Consulta uma venda pelo seu identificador
-	 * 
+	 *
 	 * @param id
 	 * @return
 	 */
@@ -135,13 +135,13 @@ public class EcommerceController {
 		return saleRepository.findById(id)
 				.map(sale -> new ResponseEntity<Sale>(sale, HttpStatus.OK))
 				.orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
-		
+
 	}
 
 	/**
 	 * 5. Registrar uma nova venda de discos calculando o valor total de cashback
 	 * considerando a tabela.
-	 * 
+	 *
 	 * @param sale
 	 * @return
 	 */
@@ -153,36 +153,5 @@ public class EcommerceController {
 
 		return new ResponseEntity<Sale>(sale, HttpStatus.CREATED);
 	}
-
-//	@PostMapping("/sale")
-//	public ResponseEntity<Sale> createSale(@RequestBody Sale sale) {
-//
-//		Long customerId = sale.getCustomer().getId();
-//		Customer customer = customerRepository.findById(customerId).orElse(null);
-//		if(customer == null) {
-//			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//		}
-//		sale.setCustomer(customer);
-//
-//		for (ItemSale item : sale.getItens()) {
-//
-//			Long idProduct = item.getProduct().getId();
-//			Product product = productRepository.findById(idProduct).orElse(null);
-//			System.out.print("Product " + product);
-//
-//			if (product == null) {
-//				return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//			}
-//
-//			item.setProduct(product);
-//			item.setSale(sale);
-//			item = cashbackService.calculate(item);
-//		}
-//
-//		sale.calculateTotalCashback();
-//		sale = saleRepository.save(sale);
-//
-//		return new ResponseEntity<Sale>(sale, HttpStatus.CREATED);
-//	}
 
 }
