@@ -16,7 +16,6 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -126,7 +125,6 @@ public class ApiIntegrationTest {
         sale.setItens(itens);
 
         RequestSpecification request = RestAssured.given();
-
         Response response = request
                 .contentType("application/json")
                 .accept("application/json")
@@ -139,62 +137,12 @@ public class ApiIntegrationTest {
                 .extract()
                 .response();
 
-
         assertTrue(response.statusCode() == 201);
 
-        BigDecimal totalValue = response.jsonPath().getObject("totalValue", BigDecimal.class);
-        assertTrue(totalValue.compareTo(new BigDecimal("74.505")) == 0);
+        List<ItemSale> itemSales = response.jsonPath().getList("itens", ItemSale.class);
+        assertEquals(itemSales.size(), 2);
 
     }
-
-//	@Test
-//	public void createSale(){
-//
-//		Customer customer = this.customerRepository.findById(3L).orElse(null);
-//		Product product1 = this.productRepository.findById(25L).orElse(null);
-//		Product product2 = this.productRepository.findById(56L).orElse(null);
-//
-//		Sale sale = new Sale();
-//		sale.setCustomer(customer);
-//
-//		ItemSale itemSale1 = new ItemSale();
-//		itemSale1.setProduct(product1);
-//
-//		ItemSale itemSale2 = new ItemSale();
-//		itemSale2.setProduct(product2);
-//
-//		List<ItemSale> itens = new ArrayList<>();
-//		itens.add(itemSale1);
-//		itens.add(itemSale2);
-//
-//		sale.setItens(itens);
-//
-//		System.out.print(sale);
-//
-//		assertTrue(10 == 10);
-//
-//		RequestSpecification request = RestAssured.given();
-//
-//		Response response = request
-//				.contentType("application/json")
-//				.accept("application/json")
-//				.body(sale)
-//				.when()
-//				.post(ENDPOINT_SALE)
-//				.then()
-//				.statusCode(201)
-//				.contentType("application/json")
-//				.extract()
-//				.response();
-//
-//		System.out.print("*** RESPONSE " + response);
-//		System.out.print("*** RESPONSE " + response.statusCode());
-//
-//		assertTrue(response.statusCode() == 201);
-//
-//		//response.jsonPath().getString("")
-//
-//	}
 
 //	@Test
 //	public void searchPaginateSalesByDates() {
