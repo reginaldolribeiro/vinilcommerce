@@ -1,7 +1,9 @@
 package com.vinilcommerce.controller;
 
-import java.time.LocalDate;
-
+import com.vinilcommerce.model.Genre;
+import com.vinilcommerce.model.Product;
+import com.vinilcommerce.model.Sale;
+import com.vinilcommerce.repository.ProductRepository;
 import com.vinilcommerce.service.SaleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -9,34 +11,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import com.vinilcommerce.model.Customer;
-import com.vinilcommerce.model.Genre;
-import com.vinilcommerce.model.ItemSale;
-import com.vinilcommerce.model.Product;
-import com.vinilcommerce.model.Sale;
-import com.vinilcommerce.repository.CustomerRepository;
-import com.vinilcommerce.repository.ProductRepository;
-import com.vinilcommerce.repository.SaleRepository;
-import com.vinilcommerce.service.CashbackService;
+import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/api")
 public class EcommerceController {
 
 	@Autowired
-	private SaleRepository saleRepository;
-
-	@Autowired
 	private ProductRepository productRepository;
-
 	@Autowired
 	private SaleService saleService;
 
@@ -102,8 +86,10 @@ public class EcommerceController {
 			@RequestParam(value = "end", required = false) @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate end,
 			Pageable pageable) {
 
-		return new ResponseEntity<>(saleService.findSalesByRangeDate(start, end, pageable), HttpStatus.OK);
+		Page<Sale> sales = saleService.findSalesByRangeDate(start, end, pageable);
+		if (sales.isEmpty()) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
+        return new ResponseEntity<>(sales, HttpStatus.OK);
 	}
 
 	/**
@@ -114,10 +100,9 @@ public class EcommerceController {
 	 */
 	@GetMapping("/sale/{id}")
 	public ResponseEntity<Sale> findSaleById(@PathVariable Long id) {
-		return saleRepository.findById(id)
+		return saleService.findSaleById(id)
 				.map(sale -> new ResponseEntity<Sale>(sale, HttpStatus.OK))
 				.orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
-
 	}
 
 	/**
@@ -129,7 +114,6 @@ public class EcommerceController {
 	 */
 	@PostMapping("/sale")
 	public ResponseEntity<Sale> createSale(@RequestBody Sale sale) {
-
 		sale = saleService.createSale(sale);
 		if(sale == null) return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 

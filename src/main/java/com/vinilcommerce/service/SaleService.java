@@ -10,11 +10,10 @@ import com.vinilcommerce.repository.SaleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 @Service
 public class SaleService {
@@ -58,15 +57,13 @@ public class SaleService {
 
     public Page<Sale> findSalesByRangeDate(LocalDate start, LocalDate end, Pageable pageable) {
 
-        return (start == null && end == null) ? saleRepository.findAll(pageable) : saleRepository.findAllByDataBetweenOrderByDataDesc(start, end, pageable);
+        if(start == null || end == null) {
+            return saleRepository.findAll(pageable);
+        }
 
-//        if(start == null || end == null) {
-//            Page<Sale> sales = saleRepository.findAll(pageable);
-//            return sales;
-//        }
-//
-//        Page<Sale> sales = saleRepository.findAllByDataBetweenOrderByDataDesc(start, end, pageable);
-//        return sales;
+        return saleRepository.findAllByDataBetweenOrderByDataDesc(start, end, pageable);
+
+        //return (start == null && end == null) ? saleRepository.findAll(pageable) : saleRepository.findAllByDataBetweenOrderByDataDesc(start, end, pageable);
 
 //        if(start == null || end == null) {
 //            Page<Sale> sales = saleRepository.findAll(pageable);
@@ -81,6 +78,11 @@ public class SaleService {
 //            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 //        }
 //        return new ResponseEntity<>(sales, HttpStatus.OK);
+    }
+
+
+    public Optional<Sale> findSaleById(Long id) {
+        return saleRepository.findById(id);
     }
 
 }
