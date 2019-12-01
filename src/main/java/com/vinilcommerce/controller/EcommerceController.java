@@ -38,12 +38,6 @@ public class EcommerceController {
 	private ProductRepository productRepository;
 
 	@Autowired
-	private CashbackService cashbackService;
-
-	@Autowired
-	private CustomerRepository customerRepository;
-
-	@Autowired
 	private SaleService saleService;
 
 	/**
@@ -108,19 +102,7 @@ public class EcommerceController {
 			@RequestParam(value = "end", required = false) @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate end,
 			Pageable pageable) {
 
-		if(start == null || end == null) {
-			Page<Sale> sales = saleRepository.findAll(pageable);
-			if (sales.isEmpty()) {
-				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-			}
-			return new ResponseEntity<>(sales, HttpStatus.OK);
-		}
-
-		Page<Sale> sales = saleRepository.findAllByDataBetweenOrderByDataDesc(start, end, pageable);
-		if (sales.isEmpty()) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-		return new ResponseEntity<>(sales, HttpStatus.OK);
+		return new ResponseEntity<>(saleService.findSalesByRangeDate(start, end, pageable), HttpStatus.OK);
 
 	}
 
