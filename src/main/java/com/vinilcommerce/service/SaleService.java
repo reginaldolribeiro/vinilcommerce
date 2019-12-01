@@ -54,7 +54,6 @@ public class SaleService {
 
     }
 
-
     public Page<Sale> findSalesByRangeDate(LocalDate start, LocalDate end, Pageable pageable) {
 
         if(start == null || end == null) {
@@ -62,24 +61,7 @@ public class SaleService {
         }
 
         return saleRepository.findAllByDataBetweenOrderByDataDesc(start, end, pageable);
-
-        //return (start == null && end == null) ? saleRepository.findAll(pageable) : saleRepository.findAllByDataBetweenOrderByDataDesc(start, end, pageable);
-
-//        if(start == null || end == null) {
-//            Page<Sale> sales = saleRepository.findAll(pageable);
-//            if (sales.isEmpty()) {
-//                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//            }
-//            return new ResponseEntity<>(sales, HttpStatus.OK);
-//        }
-//
-//        Page<Sale> sales = saleRepository.findAllByDataBetweenOrderByDataDesc(start, end, pageable);
-//        if (sales.isEmpty()) {
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//        }
-//        return new ResponseEntity<>(sales, HttpStatus.OK);
     }
-
 
     public Optional<Sale> findSaleById(Long id) {
         return saleRepository.findById(id);

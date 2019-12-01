@@ -3,6 +3,7 @@ package com.vinilcommerce.vinilcommerce;
 import com.vinilcommerce.model.*;
 import com.vinilcommerce.repository.CustomerRepository;
 import com.vinilcommerce.repository.ProductRepository;
+import com.vinilcommerce.service.SaleService;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
@@ -16,6 +17,8 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -37,6 +40,8 @@ public class ApiIntegrationTest {
     private CustomerRepository customerRepository;
     @Autowired
     private ProductRepository productRepository;
+    @Autowired
+    private SaleService saleService;
 
     @LocalServerPort
     int port;
@@ -47,7 +52,6 @@ public class ApiIntegrationTest {
         RestAssured.port = port;
         this.responseAlbum = RestAssured.given().get(ENDPOINT_ALBUM);
         this.responseSale = RestAssured.given().get(ENDPOINT_SALE);
-
     }
 
     @Test
@@ -112,24 +116,7 @@ public class ApiIntegrationTest {
     @Test
     public void createSale(){
 
-        Customer customer = this.customerRepository.findById(3L).orElse(null);
-        Product product1 = this.productRepository.findById(25L).orElse(null);
-        Product product2 = this.productRepository.findById(56L).orElse(null);
-
-        Sale sale = new Sale();
-        sale.setCustomer(customer);
-
-        ItemSale itemSale1 = new ItemSale();
-        itemSale1.setProduct(product1);
-
-        ItemSale itemSale2 = new ItemSale();
-        itemSale2.setProduct(product2);
-
-        List<ItemSale> itens = new ArrayList<>();
-        itens.add(itemSale1);
-        itens.add(itemSale2);
-
-        sale.setItens(itens);
+        Sale sale = createInitialSale();
 
         RequestSpecification request = RestAssured.given();
         Response response = request
@@ -149,19 +136,56 @@ public class ApiIntegrationTest {
         List<ItemSale> itemSales = response.jsonPath().getList("itens", ItemSale.class);
         assertEquals(itemSales.size(), 2);
 
+        long id = response.jsonPath().getLong("id");
+        String url = ENDPOINT_SALE + "/" + this.id;
+        RestAssured.given().get(url).then().statusCode(200).and().contentType(ContentType.JSON);
+
     }
 
-//	@Test
-//	public void searchPaginateSalesByDates() {
-//		String url = ENDPOINT_SALE + "?start=01/11/2019&end=10/11/2019&size=1&page=0";
-//		RestAssured.given().get(url).then().statusCode(200).and().contentType(ContentType.JSON);
-//	}
-//
-//	@Test
-//	public void searchSaleById() {
-//		String id = "1";
-//		String url = ENDPOINT_SALE + "/" + id;
-//		RestAssured.given().get(url).then().statusCode(200).and().contentType(ContentType.JSON);
-//	}
+	@Test
+	public void searchPaginateSalesByDates() {
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate now = LocalDate.now();
+        String startDate = now.format(formatter);
+        String endDate = now.plusDays(30).format(formatter);
+
+        String url = ENDPOINT_SALE + "?start=" + startDate + "&end=" + endDate + "&size=1&page=0";
+		RestAssured.given().get(url).then().statusCode(200).and().contentType(ContentType.JSON);
+	}
+
+    @Test
+    public void searchPaginateSalesWithWrongDates() {
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate now = LocalDate.now();
+        String startDate = now.format(formatter);
+        String endDate = now.minusDays(30).format(formatter);
+
+        String url = ENDPOINT_SALE + "?start=" + startDate + "&end=" + endDate + "&size=1&page=0";
+        RestAssured.given().get(url).then().statusCode(404);
+    }
+
+    private Sale createInitialSale() {
+        Customer customer = this.customerRepository.findById(3L).orElse(null);
+        Product product1 = this.productRepository.findById(25L).orElse(null);
+        Product product2 = this.productRepository.findById(56L).orElse(null);
+
+        Sale sale = new Sale();
+        sale.setCustomer(customer);
+
+        ItemSale itemSale1 = new ItemSale();
+        itemSale1.setProduct(product1);
+
+        ItemSale itemSale2 = new ItemSale();
+        itemSale2.setProduct(product2);
+
+        List<ItemSale> itens = new ArrayList<>();
+        itens.add(itemSale1);
+        itens.add(itemSale2);
+
+        sale.setItens(itens);
+        return sale;
+    }
 
 }

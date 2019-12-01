@@ -23,12 +23,6 @@ public class EcommerceController {
 	@Autowired
 	private SaleService saleService;
 
-	/**
-	 * 1. Consultar o catálogo de discos de forma paginada, filtrando por gênero e
-	 * ordenando de forma crescente pelo nome do disco;
-	 *
-	 * @return
-	 */
 	@GetMapping("/album")
 	public ResponseEntity<Page<Product>> findAlbumsByGenre(@RequestParam(value = "genre", required = false) String genre,
 														   Pageable pageable) {
@@ -38,15 +32,9 @@ public class EcommerceController {
 		} catch (IllegalArgumentException e){
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-
 		return !products.isEmpty() ? new ResponseEntity<>(products, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 
-	/**
-	 * 2. Consulta o disco pelo seu identificador.
-	 *
-	 * @return
-	 */
 	@GetMapping("/album/{id}")
 	public ResponseEntity<Product> findAlbumById(@PathVariable Long id) {
 		return productService.findAlbumById(id)
@@ -54,13 +42,6 @@ public class EcommerceController {
 				.orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
 	}
 
-	/**
-	 * 3. Consultar todas as vendas efetuadas de forma paginada, filtrando pelo
-	 * range de datas (inicial e final) da venda e ordenando de forma decrescente
-	 * pela data da venda;
-	 *
-	 * @return
-	 */
 	@GetMapping("/sale")
 	public ResponseEntity<Page<Sale>> findSalesByRangeDate(
 			@RequestParam(value = "start", required = false) @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate start,
@@ -68,17 +49,9 @@ public class EcommerceController {
 			Pageable pageable) {
 
 		Page<Sale> sales = saleService.findSalesByRangeDate(start, end, pageable);
-		if (sales.isEmpty()) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-
-        return new ResponseEntity<>(sales, HttpStatus.OK);
+		return !sales.isEmpty() ? new ResponseEntity<>(sales, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 
-	/**
-	 * 4. Consulta uma venda pelo seu identificador
-	 *
-	 * @param id
-	 * @return
-	 */
 	@GetMapping("/sale/{id}")
 	public ResponseEntity<Sale> findSaleById(@PathVariable Long id) {
 		return saleService.findSaleById(id)
@@ -86,19 +59,10 @@ public class EcommerceController {
 				.orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
 	}
 
-	/**
-	 * 5. Registrar uma nova venda de discos calculando o valor total de cashback
-	 * considerando a tabela.
-	 *
-	 * @param sale
-	 * @return
-	 */
 	@PostMapping("/sale")
 	public ResponseEntity<Sale> createSale(@RequestBody Sale sale) {
 		sale = saleService.createSale(sale);
-		if(sale == null) return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-
-		return new ResponseEntity<Sale>(sale, HttpStatus.CREATED);
+		return (sale == null) ? new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR) : new ResponseEntity<Sale>(sale, HttpStatus.CREATED);
 	}
 
 }
