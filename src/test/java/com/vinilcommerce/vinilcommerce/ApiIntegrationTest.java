@@ -103,6 +103,13 @@ public class ApiIntegrationTest {
     }
 
     @Test
+    public void searchAlbumThatDoesntExist() {
+        String id = "99999999";
+        String url = ENDPOINT_ALBUM + "/" + id;
+        RestAssured.given().get(url).then().statusCode(404);
+    }
+
+    @Test
     public void createSale(){
 
         Customer customer = this.customerRepository.findById(3L).orElse(null);

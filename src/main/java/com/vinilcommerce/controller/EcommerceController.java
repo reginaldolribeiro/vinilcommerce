@@ -1,9 +1,8 @@
 package com.vinilcommerce.controller;
 
-import com.vinilcommerce.model.Genre;
 import com.vinilcommerce.model.Product;
 import com.vinilcommerce.model.Sale;
-import com.vinilcommerce.repository.ProductRepository;
+import com.vinilcommerce.service.ProductService;
 import com.vinilcommerce.service.SaleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,7 +19,7 @@ import java.time.LocalDate;
 public class EcommerceController {
 
 	@Autowired
-	private ProductRepository productRepository;
+	private ProductService productService;
 	@Autowired
 	private SaleService saleService;
 
@@ -33,30 +32,14 @@ public class EcommerceController {
 	@GetMapping("/album")
 	public ResponseEntity<Page<Product>> findAlbumsByGenre(@RequestParam(value = "genre", required = false) String genre,
 														   Pageable pageable) {
-
-		System.out.print("**** PAgeable " + pageable);
-
-		if(genre == null) {
-			Page<Product> products = productRepository.findAll(pageable);
-			if (products.isEmpty()) {
-				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-			}
-			return new ResponseEntity<>(products, HttpStatus.OK);
-		}
-
-		Genre genreSearched;
-		try {
-			genreSearched = Genre.getEnum(genre.toUpperCase());
-		} catch (Exception e) {
+		Page<Product> products;
+		try{
+			products = productService.findAlbumsByGenre(genre, pageable);
+		} catch (IllegalArgumentException e){
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 
-		Page<Product> products = productRepository.findByGenreOrderByName(genreSearched, pageable);
-		if (products == null || products.isEmpty()) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-		return new ResponseEntity<>(products, HttpStatus.OK);
-
+		return !products.isEmpty() ? new ResponseEntity<>(products, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 
 	/**
@@ -66,11 +49,9 @@ public class EcommerceController {
 	 */
 	@GetMapping("/album/{id}")
 	public ResponseEntity<Product> findAlbumById(@PathVariable Long id) {
-		Product product = productRepository.findById(id).orElse(null);
-		if (product == null) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-		return new ResponseEntity<Product>(product, HttpStatus.OK);
+		return productService.findAlbumById(id)
+				.map(product -> new ResponseEntity<Product>(product, HttpStatus.OK))
+				.orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
 	}
 
 	/**
